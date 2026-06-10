@@ -62,6 +62,12 @@ INTERNAL_IPS = "127.0.0.1"
 # whether a featured item appears enlarged with player on index page
 VIDEO_PLAYER_FEATURED_VIDEO_ON_INDEX_PAGE = False
 
+# Sidebar link visibility
+HIDE_HOME_LINK = False
+HIDE_TAGS_LINK = False
+HIDE_CATEGORIES_LINK = False
+HIDE_CONTACT_LINK = False
+
 PRE_UPLOAD_MEDIA_MESSAGE = ""
 
 # email settings

@@ -36,6 +36,10 @@ def stuff(request):
     ret["PRE_UPLOAD_MEDIA_MESSAGE"] = settings.PRE_UPLOAD_MEDIA_MESSAGE
     ret["SIDEBAR_FOOTER_TEXT"] = settings.SIDEBAR_FOOTER_TEXT
     ret["POST_UPLOAD_AUTHOR_MESSAGE_UNLISTED_NO_COMMENTARY"] = settings.POST_UPLOAD_AUTHOR_MESSAGE_UNLISTED_NO_COMMENTARY
+    ret["HIDE_HOME_LINK"] = getattr(settings, "HIDE_HOME_LINK", False)
+    ret["HIDE_TAGS_LINK"] = getattr(settings, "HIDE_TAGS_LINK", False)
+    ret["HIDE_CATEGORIES_LINK"] = getattr(settings, "HIDE_CATEGORIES_LINK", False)
+    ret["HIDE_CONTACT_LINK"] = getattr(settings, "HIDE_CONTACT_LINK", False)
     ret["IS_MEDIACMS_ADMIN"] = request.user.is_superuser
     ret["IS_MEDIACMS_EDITOR"] = is_mediacms_editor(request.user)
     ret["IS_MEDIACMS_MANAGER"] = is_mediacms_manager(request.user)
