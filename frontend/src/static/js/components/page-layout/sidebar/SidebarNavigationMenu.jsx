@@ -151,7 +151,7 @@ export function SidebarNavigationMenu() {
         }
       }
 
-      if (userCan.saveMedia) {
+      if (userCan.saveMedia && userCan.addMedia) {
         items.push({
           link: userPages.playlists,
           icon: 'playlist_play',
