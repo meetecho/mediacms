@@ -7,7 +7,7 @@ MediaCMS.user = {
 		anonymous: {% if request.user.is_authenticated %}false{% else %}true{% endif %},
 	},
 	can: {
-		addMedia: {% if CAN_UPLOAD_MEDIA %}true{% else %}false{% endif %},
+		addMedia: {% if USER_CAN_ADD_MEDIA %}true{% else %}false{% endif %},
 		editMedia: {% if CAN_EDIT_MEDIA %}true{% else %}false{% endif %},
 		deleteMedia: {% if CAN_DELETE_MEDIA %}true{% else %}false{% endif %},
 		editSubtitle: {% if CAN_EDIT_MEDIA %}true{% else %}false{% endif %},

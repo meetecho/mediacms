@@ -3,7 +3,7 @@ from django.conf import settings
 from cms.version import VERSION
 
 from .frontend_translations import get_translation, get_translation_strings
-from .methods import is_mediacms_editor, is_mediacms_manager
+from .methods import is_mediacms_editor, is_mediacms_manager, user_allowed_to_upload
 
 
 def stuff(request):
@@ -23,6 +23,8 @@ def stuff(request):
     ret["CAN_LOGIN"] = settings.LOGIN_ALLOWED
     ret["CAN_REGISTER"] = settings.REGISTER_ALLOWED
     ret["CAN_UPLOAD_MEDIA"] = settings.UPLOAD_MEDIA_ALLOWED
+    # Keep UI in sync with backend upload authorization logic.
+    ret["USER_CAN_ADD_MEDIA"] = settings.UPLOAD_MEDIA_ALLOWED and user_allowed_to_upload(request)
     ret["TIMESTAMP_IN_TIMEBAR"] = settings.TIMESTAMP_IN_TIMEBAR
     ret["CAN_MENTION_IN_COMMENTS"] = settings.ALLOW_MENTION_IN_COMMENTS
     ret["CAN_LIKE_MEDIA"] = settings.CAN_LIKE_MEDIA
