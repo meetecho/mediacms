@@ -1,10 +1,3 @@
-"""
-Tests for OIDCAccountAdapter and module-level helper functions.
-
-Mocks allauth's SocialLogin / SocialAccount objects to test attribute sync,
-role mapping, and group membership logic in isolation from a live OIDC provider.
-"""
-
 import pytest
 from unittest.mock import MagicMock, patch, PropertyMock
 
@@ -25,10 +18,6 @@ from rbac.models import RBACGroup, RBACMembership
 
 User = get_user_model()
 
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
 
 def make_social_app(name="Test OIDC", provider_id="test-oidc"):
     app = SocialApp.objects.create(
@@ -64,10 +53,6 @@ def make_social_account(user, app, uid="uid-123", extra_data=None):
     )
     return account
 
-
-# ---------------------------------------------------------------------------
-# OIDCAccountAdapter.populate_user
-# ---------------------------------------------------------------------------
 
 @pytest.mark.django_db
 class TestPopulateUser:
@@ -110,10 +95,6 @@ class TestPopulateUser:
         assert user.first_name == "Jane"
         assert user.last_name == "Doe"
 
-
-# ---------------------------------------------------------------------------
-# perform_user_actions — attribute sync
-# ---------------------------------------------------------------------------
 
 @pytest.mark.django_db
 class TestPerformUserActionsAttributeSync:
@@ -163,10 +144,6 @@ class TestPerformUserActionsAttributeSync:
         assert result == user
 
 
-# ---------------------------------------------------------------------------
-# sync_profile_picture
-# ---------------------------------------------------------------------------
-
 @pytest.mark.django_db
 class TestSyncProfilePicture:
     @patch("oidc_auth.tasks.download_user_logo")
@@ -214,10 +191,6 @@ class TestSyncProfilePicture:
         mock_task.delay.assert_called_once()
 
 
-# ---------------------------------------------------------------------------
-# _parse_role_pairs
-# ---------------------------------------------------------------------------
-
 class TestParseRolePairs:
     def test_nested_lists_parsed_correctly(self):
         raw = [["chair", "secretariat"], ["member", "iab"]]
@@ -262,10 +235,6 @@ class TestParseRolePairs:
         raw = ["plain-role"]   # no ":" → not a combined string
         assert _parse_role_pairs(raw, ":") == []
 
-
-# ---------------------------------------------------------------------------
-# handle_ietf_role_mapping (IETF Datatracker style)
-# ---------------------------------------------------------------------------
 
 @pytest.mark.django_db
 class TestHandleRoleMappingPairFormat:
