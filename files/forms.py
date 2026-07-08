@@ -23,6 +23,11 @@ class MultipleSelect(forms.CheckboxSelectMultiple):
 
 class MediaMetadataForm(forms.ModelForm):
     new_tags = forms.CharField(label="Tags", help_text="a comma separated list of tags.", required=False)
+    new_playlist_title = forms.CharField(
+        label="+ Create Playlist",
+        help_text="Create a new playlist for the media owner and add this media to it.",
+        required=False,
+    )
     playlist_ids = forms.ModelMultipleChoiceField(
         queryset=Playlist.objects.none(),
         required=False,
@@ -89,6 +94,7 @@ class MediaMetadataForm(forms.ModelForm):
         layout_fields = [
             CustomField('title'),
             CustomField('new_tags'),
+            CustomField('new_playlist_title'),
             CustomField('playlist_ids'),
             CustomField('add_date'),
             CustomField('description'),
@@ -132,8 +138,10 @@ class MediaMetadataForm(forms.ModelForm):
         added_count = 0
         removed_count = 0
         unchanged_count = 0
+        created_playlist_title = None
         full_playlists = []
         selected_playlists = data.get("playlist_ids")
+        new_playlist_title = (data.get("new_playlist_title") or "").strip()
 
         playlist_owner = media.user
         owner_playlists = Playlist.objects.filter(user=playlist_owner)
@@ -142,6 +150,11 @@ class MediaMetadataForm(forms.ModelForm):
         selected_playlist_ids = set()
         if selected_playlists:
             selected_playlist_ids = set(selected_playlists.values_list("id", flat=True))
+
+        if new_playlist_title:
+            new_playlist = Playlist.objects.create(title=new_playlist_title, user=playlist_owner)
+            created_playlist_title = new_playlist.title
+            selected_playlist_ids.add(new_playlist.id)
 
         existing_playlist_ids = set(existing_relations.values_list("playlist_id", flat=True))
 
@@ -174,6 +187,7 @@ class MediaMetadataForm(forms.ModelForm):
             "added": added_count,
             "removed": removed_count,
             "unchanged": unchanged_count,
+            "created_playlist_title": created_playlist_title,
             "full_playlists": full_playlists,
         }
 

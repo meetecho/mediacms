@@ -381,7 +381,11 @@ def edit_media(request):
             added_count = playlist_sync_results.get("added", 0)
             removed_count = playlist_sync_results.get("removed", 0)
             unchanged_count = playlist_sync_results.get("unchanged", 0)
+            created_playlist_title = playlist_sync_results.get("created_playlist_title")
             full_playlists = playlist_sync_results.get("full_playlists", [])
+
+            if created_playlist_title:
+                messages.add_message(request, messages.INFO, f"Created playlist '{created_playlist_title}' and added media to it")
 
             if added_count:
                 messages.add_message(request, messages.INFO, f"Media added to {added_count} playlist(s)")
